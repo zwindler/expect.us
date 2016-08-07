@@ -1,0 +1,1 @@
+Simple script to automate task via SSH + password. I put it as an example to understand expect better, but to automate tasks consider Ansible, Puppet, Chef, ... You shouldn't use it. Really.
