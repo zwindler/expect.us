@@ -1,0 +1,27 @@
+#!/usr/bin/expect -f
+
+set action [lindex $argv 0]
+set hostname [lindex $argv 1]
+set username [lindex $argv 2]
+set password [lindex $argv 3]
+set argument1 [lindex $argv 4]
+set argument2 [lindex $argv 5]
+
+if { $action == "ssh" } {
+  puts "Starting command : ssh $username@$hostname // $argument1"
+  spawn ssh -o StrictHostKeyChecking=no -o LogLevel=ERROR $username@$hostname
+  expect "?*assword:"
+  send "$password\r"
+  expect "login"
+  expect "#"
+  send -- "$argument1\r"
+  expect "~]#"
+} elseif { $action == "scp" } {
+  puts "Starting command : scp $argument1 $username@$hostname:$argument2"
+  spawn scp -rp -o StrictHostKeyChecking=no -o LogLevel=ERROR $argument1 $username@$hostname:$argument2
+  expect "?*assword:"
+  send "$password\r"
+  expect "~]#"
+}
+
+puts "Ending script"
